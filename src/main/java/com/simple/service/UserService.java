@@ -6,4 +6,6 @@ import com.simple.model.entity.User;
 public interface UserService extends Service<User> {
 
     User login(User user);
+
+    User getUserInfo(String userId);
 }

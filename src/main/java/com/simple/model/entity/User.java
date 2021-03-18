@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import javax.persistence.Id;
+import java.util.List;
 
 @Data
 @ToString
@@ -16,4 +17,6 @@ public class User {
     private String password;
 
     private String displayName;
+
+    private List<User> friends;
 }

@@ -18,4 +18,9 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         return userMapper.login(user);
     }
 
+    @Override
+    public User getUserInfo(String userId) {
+        return userMapper.getUserInfo(userId);
+    }
+
 }

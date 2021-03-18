@@ -8,8 +8,9 @@ import java.util.Map;
 
 @AllArgsConstructor
 public enum  MsgCode {
-    SINGlE_SEND(1, "私聊"),
-    GROUP_SEND(2, "群聊");
+    LOGIN_MSG(0, "登录"),
+    SINGlE_MSG(1, "私聊"),
+    GROUP_MSG(2, "群聊");
     private final int code;
 
     private final String text;

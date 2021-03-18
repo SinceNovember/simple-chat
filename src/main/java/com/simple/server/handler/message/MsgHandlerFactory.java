@@ -8,8 +8,9 @@ import java.util.HashMap;
 public class MsgHandlerFactory {
     private static final HashMap<MsgCode, MsgHandler> msgHandlers = new HashMap<>();
     static {
-        msgHandlers.put(MsgCode.SINGlE_SEND, new singleMsgHandler());
-        msgHandlers.put(MsgCode.GROUP_SEND, new groupMsgHandler());
+        msgHandlers.put(MsgCode.LOGIN_MSG, new loginMsgHandler());
+        msgHandlers.put(MsgCode.SINGlE_MSG, new singleMsgHandler());
+        msgHandlers.put(MsgCode.GROUP_MSG, new groupMsgHandler());
 
     }
 

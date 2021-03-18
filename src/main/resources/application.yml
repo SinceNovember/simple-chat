@@ -7,12 +7,20 @@ datasource:
 spring:
   datasource:
     username: root
-    password: Gepoint
+    password: mypassword
 #    Gepoint
     url: jdbc:mysql://${datasource.url}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
     hikari:
       max-lifetime: 1770000
       maximumPoolSize: 10
+#  thymeleaf:
+#    prefix: classpath:/templates/
+#    suffix: .html
+#    mode: HTML5
+#    encoding: UTF-8
+#    servlet:
+#      content-type: text/html
+#    cache: false
 
 logging:
   level:
@@ -38,3 +46,5 @@ pagehelper:
   helper-dialect: mysql
   reasonable: true
   support-methods-arguments: true
+
+

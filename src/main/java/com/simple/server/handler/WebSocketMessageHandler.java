@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.simple.server.handler.message.Msg;
 import com.simple.server.handler.message.MsgHandler;
 import com.simple.server.handler.message.MsgHandlerFactory;
+import com.simple.utils.AttributeKeys;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -72,22 +73,6 @@ public class WebSocketMessageHandler extends SimpleChannelInboundHandler<Msg> {
         log.info("服务端收到新信息：" + request);
     }
 
-    @Override
-    public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-        Channel incoming = ctx.channel();
-        //广播
-        channels.writeAndFlush(new TextWebSocketFrame("[SERVER]-" + incoming.remoteAddress() + "加入"));
-        channels.add(incoming);
-        System.out.println("Client:" + incoming.remoteAddress() + "加入");
-
-    }
-
-    @Override
-    public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
-        Channel incoming = ctx.channel();
-        channels.writeAndFlush(new TextWebSocketFrame("[SERVER]-" + incoming.remoteAddress() + "离开"));
-        System.out.println("Client:" + incoming.remoteAddress() + "离开");
-    }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -97,8 +82,8 @@ public class WebSocketMessageHandler extends SimpleChannelInboundHandler<Msg> {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        Channel incoming = ctx.channel();
-        System.out.println("Client:" + incoming.remoteAddress() + "掉线");
+        log.info("用户{}断线",ctx.channel().attr(AttributeKeys.USER_ID).get());
+//        ChannelUtil.removeChannel(ctx.channel().attr(AttributeKeys.USER_ID).get());
     }
 
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
