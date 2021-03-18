@@ -1,6 +1,7 @@
 package com.simple.server;
 
-import com.simple.server.handler.TextWebSocketFrameHandler;
+import com.simple.server.handler.TextToMessageHandler;
+import com.simple.server.handler.WebSocketMessageHandler;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -19,6 +20,7 @@ public class WebSocketChatServerInitializer extends ChannelInitializer<Channel> 
         pipeline.addLast(new ChunkedWriteHandler());
 //        pipeline.addLast(new HttpRequestHandler("/ws"));
         pipeline.addLast(new WebSocketServerProtocolHandler("/ws"));
-        pipeline.addLast(new TextWebSocketFrameHandler());
+        pipeline.addLast(new TextToMessageHandler());
+        pipeline.addLast(new WebSocketMessageHandler());
     }
 }

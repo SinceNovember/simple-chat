@@ -8,6 +8,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebMvcConfig implements WebMvcConfigurer {
     //设置默认打开页面
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("forward:WebsocketChatClient.html");
+        registry.addViewController("/").setViewName("forward:login.html");
     }
 }

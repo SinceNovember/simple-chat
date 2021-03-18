@@ -2,6 +2,7 @@ package com.simple.server.handler;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.simple.server.handler.message.Msg;
 import com.simple.server.handler.message.MsgHandler;
 import com.simple.server.handler.message.MsgHandlerFactory;
 import io.netty.channel.Channel;
@@ -17,12 +18,23 @@ import lombok.extern.slf4j.Slf4j;
  * 处理websocket请求
  */
 @Slf4j
-public class TextWebSocketFrameHandler  extends SimpleChannelInboundHandler<TextWebSocketFrame> {
+public class WebSocketMessageHandler extends SimpleChannelInboundHandler<Msg> {
     //存放所有已经连接的Channel
     public static ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+//    @Override
+//    protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame frame) throws Exception {
+//        handlerWebSocketFrame(ctx, frame);
+//    }
+
+
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame frame) throws Exception {
-        handlerWebSocketFrame(ctx, frame);
+    protected void channelRead0(ChannelHandlerContext ctx, Msg msg) throws Exception {
+        handlerMsg(ctx, msg);
+    }
+
+    public void handlerMsg(ChannelHandlerContext ctx, Msg msg) {
+        MsgHandler handler = MsgHandlerFactory.getHandler(msg.getType());
+        handler.handleMessage(ctx, msg);
     }
 
     private void handlerWebSocketFrame(ChannelHandlerContext ctx, TextWebSocketFrame frame) {
@@ -55,8 +67,8 @@ public class TextWebSocketFrameHandler  extends SimpleChannelInboundHandler<Text
         } catch (Exception e) {
             e.printStackTrace();
         }
-        MsgHandler msg = MsgHandlerFactory.getHandler(param.getString("type"));
-        msg.handleMessage(param, ctx);
+//        MsgHandler msg = MsgHandlerFactory.getHandler(param.getString("type"));
+//        msg.handleMessage(param, ctx);
         log.info("服务端收到新信息：" + request);
     }
 

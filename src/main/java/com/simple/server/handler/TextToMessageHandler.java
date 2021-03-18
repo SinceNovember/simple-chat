@@ -1,0 +1,18 @@
+package com.simple.server.handler;
+
+import com.simple.server.handler.message.Msg;
+import com.simple.utils.JsonUtils;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.MessageToMessageDecoder;
+import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+
+import java.util.List;
+
+public class TextToMessageHandler extends MessageToMessageDecoder<TextWebSocketFrame> {
+    @Override
+    protected void decode(ChannelHandlerContext channelHandlerContext, TextWebSocketFrame textWebSocketFrame, List<Object> list) throws Exception {
+        System.out.println(textWebSocketFrame.text());
+        String text = textWebSocketFrame.text();
+        list.add(JsonUtils.jsonToPojo(text, Msg.class));
+    }
+}

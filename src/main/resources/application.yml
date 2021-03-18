@@ -2,14 +2,14 @@ server:
   port: 8099
 
 datasource:
-  url: localhost:3306/tk_blog
+  url: localhost:3306/simple_chat
 
 spring:
   datasource:
     username: root
     password: Gepoint
 #    Gepoint
-    url: jdbc:mysql://${datasource.url}?useSSL=false&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&autoReconnect=true&failOverReadOnly=false&maxReconnects=10
+    url: jdbc:mysql://${datasource.url}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
     hikari:
       max-lifetime: 1770000
       maximumPoolSize: 10
@@ -20,7 +20,7 @@ logging:
   config: logback.xml
 
 mybatis:
-  type-aliases-package: cn.simple.model.entity
+  type-aliases-package: com.simple.model.entity
   mapper-locations:
     - classpath:mapper/*.xml
 #  type-handlers-package: com.epoint.model.enums.converter

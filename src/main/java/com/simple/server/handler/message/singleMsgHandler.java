@@ -8,8 +8,7 @@ import io.netty.channel.ChannelHandlerContext;
  */
 public class singleMsgHandler extends CommonMsgHandler {
     @Override
-    public void handleMessage(JSONObject param, ChannelHandlerContext ctx) {
-        System.out.println(param.getString("content"));
-        ctx.channel().writeAndFlush(param.getString("content"));
+    public void handleMessage(ChannelHandlerContext ctx, Msg msg) {
+        ctx.channel().writeAndFlush(msg.getContent());
     }
 }

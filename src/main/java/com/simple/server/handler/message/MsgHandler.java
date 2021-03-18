@@ -8,5 +8,5 @@ import io.netty.channel.ChannelHandlerContext;
  */
 public interface MsgHandler {
 
-    public void handleMessage(JSONObject param, ChannelHandlerContext ctx);
+    public void handleMessage(ChannelHandlerContext ctx, Msg msg);
 }
