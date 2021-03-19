@@ -7,12 +7,17 @@ datasource:
 spring:
   datasource:
     username: root
-    password: mypassword
+    password: Gepoint
 #    Gepoint
     url: jdbc:mysql://${datasource.url}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
     hikari:
       max-lifetime: 1770000
       maximumPoolSize: 10
+#  mvc:
+#    static-path-pattern: /**
+#  resources:
+#    static-locations: classpath:/META-INF/resources/,classpath:/resources/,\
+#      classpath:/static/,classpath:/public/,file:${web.upload-path}
 #  thymeleaf:
 #    prefix: classpath:/templates/
 #    suffix: .html
@@ -47,4 +52,7 @@ pagehelper:
   reasonable: true
   support-methods-arguments: true
 
-
+#拦截器的配置
+interceptor:
+  path : /**
+  excludePath : /login,/,/dist/**,/vendor/**,/api/**

@@ -60,12 +60,12 @@
     <h5>Sign in</h5>
 
     <!-- form -->
-    <form>
+    <form action="/login" method="post">
         <div class="form-group">
-            <input type="text" class="form-control" id="loginId" placeholder="Username or email" required autofocus>
+            <input type="text" class="form-control" id="loginId" name="loginId" placeholder="Username or email" required autofocus>
         </div>
         <div class="form-group">
-            <input type="password" class="form-control" id="password" placeholder="Password" required>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
         </div>
         <div class="form-group d-flex justify-content-between">
             <div class="custom-control custom-checkbox">
@@ -74,7 +74,7 @@
             </div>
             <a href="reset-password.html">Reset password</a>
         </div>
-        <a class="btn btn-primary btn-block" onclick="login()">Sign in</a>
+        <input  class="btn btn-primary btn-block"  type="submit" name="submit" value="Sign in"></input>
         <hr>
         <p class="text-muted">Login with your social media account.</p>
         <ul class="list-inline">
@@ -134,12 +134,12 @@
 <script>
 
     var login = function(){
-        axios.post('/api/login',{
+        axios.post('/login',{
             loginId : $("#loginId").val(),
             password : $("#password").val()
         }).then(function(response){
             console.log(response);
-            window.location.href='./index.html';
+            // window.location.href='index.html';
         }).catch(function(error){
             console.log(error);
         })
