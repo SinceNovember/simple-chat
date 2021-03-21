@@ -6,26 +6,34 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
+
+
+@Component
 public class WebsocketChatServer {
 
-    private int port;
+    @Resource
+    private WebSocketChatServerInitializer webSocketChatServerInitializer;
 
-    public WebsocketChatServer(int port) {
-        this.port = port;
-    }
+//    private int port;
 
-    public void run() throws Exception {
+//    public WebsocketChatServer(int port) {
+//        this.port = port;
+//    }
+
+    public void run(int port) throws Exception {
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
             ServerBootstrap b = new ServerBootstrap();
             b.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
-                    .childHandler(new WebSocketChatServerInitializer())
+                    .childHandler(webSocketChatServerInitializer)
                     .option(ChannelOption.SO_BACKLOG, 128)
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
-            System.out.println("WebsocketChatServer 启动了");
+            System.out.println("WebsocketChatServer 启动了1111");
 
             // 绑定端口，开始接收进来的连接
             ChannelFuture f = b.bind(port).sync(); // (7)
@@ -39,13 +47,13 @@ public class WebsocketChatServer {
         }
     }
 
-    public static void main(String[] args) throws Exception {
-        int port;
-        if (args.length > 0) {
-            port = Integer.parseInt(args[0]);
-        } else {
-            port = 8081;
-        }
-        new WebsocketChatServer(port).run();
-    }
+//    public static void main(String[] args) throws Exception {
+//        int port;
+//        if (args.length > 0) {
+//            port = Integer.parseInt(args[0]);
+//        } else {
+//            port = 8081;
+//        }
+//        new WebsocketChatServer(port).run();
+//    }
 }

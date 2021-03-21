@@ -1,12 +1,11 @@
 package com.simple.config;
 
+import com.simple.factory.StringToEnumConverterFactory;
 import com.simple.interceptor.AuthCheckInterceptor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.Resource;
@@ -37,5 +36,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
      */
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authCheckInterceptor).addPathPatterns(interceptorPath).excludePathPatterns(interceptorExcludePath);
+    }
+
+    /**
+     * 注册将字符转枚举的转换测
+     * @param registry
+     */
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addConverterFactory(new StringToEnumConverterFactory());
     }
 }

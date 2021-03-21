@@ -7,6 +7,7 @@ import com.simple.server.handler.message.MsgHandler;
 import com.simple.server.handler.message.MsgHandlerFactory;
 import com.simple.utils.AttributeKeys;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
@@ -14,12 +15,21 @@ import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.util.concurrent.GlobalEventExecutor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /**
  * 处理websocket请求
  */
 @Slf4j
+@Component
+@ChannelHandler.Sharable
 public class WebSocketMessageHandler extends SimpleChannelInboundHandler<Msg> {
+
+    @Resource
+    private MsgHandlerFactory msgHandlerFactory;
+
     //存放所有已经连接的Channel
     public static ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 //    @Override
@@ -34,7 +44,7 @@ public class WebSocketMessageHandler extends SimpleChannelInboundHandler<Msg> {
     }
 
     public void handlerMsg(ChannelHandlerContext ctx, Msg msg) {
-        MsgHandler handler = MsgHandlerFactory.getHandler(msg.getType());
+        MsgHandler handler = msgHandlerFactory.getHandler(msg.getType());
         handler.handleMessage(ctx, msg);
     }
 

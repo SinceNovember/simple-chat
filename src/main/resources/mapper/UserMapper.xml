@@ -6,8 +6,11 @@
         <result column="loginid" property="loginId"/>
         <result column="password" property="password"/>
         <result column="displayname" property="displayName"/>
+    </resultMap>
 
-        <collection property="friends" ofType="com.simple.model.entity.User" column="userId"
+    <resultMap id="BaseWithFriendResultMap" type="com.simple.model.entity.UserWithFriend" extends="BaseResultMap">
+
+        <collection property="friends" ofType="com.simple.model.entity.UserWithFriend" column="userId"
                     select="com.simple.dao.UserMapper.listUserFriend">
         </collection>
     </resultMap>

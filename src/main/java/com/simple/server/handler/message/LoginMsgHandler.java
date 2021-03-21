@@ -3,11 +3,13 @@ package com.simple.server.handler.message;
 import com.simple.utils.AttributeKeys;
 import com.simple.utils.ChannelUtil;
 import io.netty.channel.ChannelHandlerContext;
+import org.springframework.stereotype.Component;
 
 /**
  * 处理登录的消息请求，主要是为了加入到ChannelGroup中
  */
-public class loginMsgHandler extends CommonMsgHandler {
+@Component("LOGIN_MSG")
+public class LoginMsgHandler extends CommonMsgHandler {
     @Override
     public void handleMessage(ChannelHandlerContext ctx, Msg msg) {
         ctx.channel().attr(AttributeKeys.LOGIN).set(true);

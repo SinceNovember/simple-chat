@@ -9,8 +9,19 @@ import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
+
+@Component
 public class WebSocketChatServerInitializer extends ChannelInitializer<Channel> {
+
+    @Resource
+    private TextToMessageHandler textToMessageHandler;
+
+    @Resource
+    private WebSocketMessageHandler webSocketMessageHandler;
+
     @Override
     protected void initChannel(Channel ch) throws Exception {
         ChannelPipeline pipeline = ch.pipeline();
@@ -20,7 +31,7 @@ public class WebSocketChatServerInitializer extends ChannelInitializer<Channel> 
         pipeline.addLast(new ChunkedWriteHandler());
 //        pipeline.addLast(new HttpRequestHandler("/ws"));
         pipeline.addLast(new WebSocketServerProtocolHandler("/ws"));
-        pipeline.addLast(new TextToMessageHandler());
-        pipeline.addLast(new WebSocketMessageHandler());
+        pipeline.addLast(textToMessageHandler);
+        pipeline.addLast(webSocketMessageHandler);
     }
 }

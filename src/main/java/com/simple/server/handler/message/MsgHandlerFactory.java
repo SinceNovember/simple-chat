@@ -1,20 +1,21 @@
 package com.simple.server.handler.message;
 
-import java.util.HashMap;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 消息工厂
  */
-public class MsgHandlerFactory {
-    private static final HashMap<MsgCode, MsgHandler> msgHandlers = new HashMap<>();
-    static {
-        msgHandlers.put(MsgCode.LOGIN_MSG, new loginMsgHandler());
-        msgHandlers.put(MsgCode.SINGlE_MSG, new singleMsgHandler());
-        msgHandlers.put(MsgCode.GROUP_MSG, new groupMsgHandler());
+@Component
+public class MsgHandlerFactory{
 
-    }
+    @Resource
+    private Map<String, MsgHandler> context = new ConcurrentHashMap<>();
 
-    public static MsgHandler getHandler(MsgCode code) {
-        return msgHandlers.get(code);
+    public  MsgHandler getHandler(MsgCode code) {
+        return context.get(code.name());
     }
 }

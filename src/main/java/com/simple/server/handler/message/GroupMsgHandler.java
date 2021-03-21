@@ -3,8 +3,10 @@ package com.simple.server.handler.message;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import org.springframework.stereotype.Component;
 
-public class groupMsgHandler extends CommonMsgHandler{
+@Component("GROUP_MSG")
+public class GroupMsgHandler extends CommonMsgHandler{
     @Override
     public void handleMessage(ChannelHandlerContext ctx, Msg msg) {
         Channel incoming = ctx.channel();

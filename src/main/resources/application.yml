@@ -1,5 +1,5 @@
 server:
-  port: 8099
+  port: 8088
 
 datasource:
   url: localhost:3306/simple_chat
@@ -7,36 +7,25 @@ datasource:
 spring:
   datasource:
     username: root
-    password: Gepoint
+    password: mypassword
 #    Gepoint
     url: jdbc:mysql://${datasource.url}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
     hikari:
       max-lifetime: 1770000
       maximumPoolSize: 10
-#  mvc:
-#    static-path-pattern: /**
-#  resources:
-#    static-locations: classpath:/META-INF/resources/,classpath:/resources/,\
-#      classpath:/static/,classpath:/public/,file:${web.upload-path}
-#  thymeleaf:
-#    prefix: classpath:/templates/
-#    suffix: .html
-#    mode: HTML5
-#    encoding: UTF-8
-#    servlet:
-#      content-type: text/html
-#    cache: false
+netty:
+  port: 8081
 
 logging:
   level:
-    com.epoint.dao: trace
+    com.simple.dao: info
   config: logback.xml
 
 mybatis:
   type-aliases-package: com.simple.model.entity
   mapper-locations:
     - classpath:mapper/*.xml
-#  type-handlers-package: com.epoint.model.enums.converter
+  type-handlers-package: com.simple.model.enums.converter
 
 
 mapper:

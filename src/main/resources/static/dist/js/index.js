@@ -10,7 +10,7 @@ $(function () {
      * @param {*}
      *            $el 渲染到的元素
      */
-    function loadEl($tmpl, data, $el) {
+    function loadData($tmpl, data, $el) {
         var rendered = Mustache.render($tmpl.html(), {
             listData : data
         });
@@ -58,9 +58,71 @@ $(function () {
         }
     };
 
-    var loadChat = function(){
-        $('.chat .messages').html('');
+    /**
+     * 获取登录的用户信息,并发送登录包
+     */
+    var loadUserInfo = function () {
+        axios.get('/api/user/info').then(function(response){
+            userId = response.data.userId;
+            ws.login_msg();
+        }).catch(function(error){
+            console.log("获取用户信息失败!");
+        })
     }
+
+    /**
+     * 加载最新消息列表
+     */
+    var loadRecentChat = function(){
+        axios.get('/api/user/recent').then(function(response){
+            var $data = response.data;
+            userId = $data.userId;
+            $("#displayName").text($data.displayName);
+            $.each($data.friends,function(index, data){
+                if (data.userId == toId) {
+                    data.isOpen = true;
+                }
+            })
+            loadData($('#recentChatList-tpl'), $data.friends, $('#recentChatGroup'))
+        }).catch(function(error){
+        })
+    }
+
+
+    /**
+     * 加载历史记录
+     */
+    var loadMsgHistory = function(){
+        axios.get('/api/msg/history',{
+            params:{
+                'toId': toId
+            }
+        }).then(function(response){
+            //把当前用户添加到返回中
+            var $data = response.data;
+
+            //清除未读的记录
+            clearNoReadMsg();
+            $.each($data,function(index, data){
+                if (data.fromId == userId) {
+                    data.me = true;
+                }
+            })
+            loadData($("#chatMessage-tpl"), $data, $(".messages"));
+        }).catch(function(error){
+            console.log(error);
+        })
+    }
+
+    //清除未读消息数量
+    var clearNoReadMsg = function(){
+        axios.put('./api/msg/clear',{
+            "toId" : toId
+        }).then(function (response) {
+            loadRecentChat();
+        })
+    }
+
 
     setTimeout(function () {
         // $('#disconnected').modal('show');
@@ -82,6 +144,8 @@ $(function () {
             input.val('');
 
             ws.single_msg(toId, message);
+            loadRecentChat();
+
             // setTimeout(function () {
             //     SohoExamle.Message.add();
             // }, 1000);
@@ -98,10 +162,13 @@ $(function () {
 
     $('.list-group').on('click','li', function(){
         toId = $(this).data('id');
-        $(this).siblings().removeClass("open-chat");
-        $(this).addClass('open-chat');
+        // clearNoReadMsg();
+        // loadRecentChat();
+        loadMsgHistory();
+        // $(this).siblings().removeClass("open-chat");
+        // $(this).addClass('open-chat');
 
-        loadChat();
+
     })
 
     if(!window.WebSocket){
@@ -113,13 +180,15 @@ $(function () {
             // console.log(event.data);
             // var json = JSON.parse(event.data);
             SohoExamle.Message.add(event.data);
-
+            loadRecentChat();
         };
 
         // 连接成功1秒后，将用户信息注册到服务器在线用户表
         socket.onopen = function(event){
             console.log("WebSocket已连接...");
-            loadData();
+            loadUserInfo();
+            loadRecentChat();
+
         }
 
         socket.onclose = function(event){
@@ -129,24 +198,14 @@ $(function () {
         alert("您的浏览器不支持WebSocket！");
     }
 
-    var loadData = function(){
-        axios.get('/api/user/info').then(function(response){
-            console.log(response);
-            var $data = response.data;
-            userId = $data.userId;
-            ws.login_msg(userId);
-            $("#displayName").text($data.displayName);
-            loadEl($('#friendList-tpl'), $data.friends, $('.list-group'))
-        }).catch(function(error){
-            console.log(error);
-        })
-    }
+
 
     var ws = {
         send_msg: function (toId, content, type) {
             if (!window.WebSocket) {
                 return;
             }
+            console.log(userId);
             if (socket.readyState == WebSocket.OPEN) {
                 var data = {
                     "fromId": userId,

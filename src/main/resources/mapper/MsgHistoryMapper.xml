@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.simple.dao.MsgHistoryMapper">
+    <resultMap id="BaseResultMap" type="com.simple.model.entity.MsgHistory">
+        <id column="rowguid" property="rowguid"/>
+        <result column="fromId" property="fromId"/>
+        <result column = "fromName" property="fromName"/>
+        <result column="toId" property="toId"/>
+        <result column="toName" property="toName"/>
+        <result column="content" property="content"/>
+        <result column="content" property="content"/>
+        <result column="type" property="type"/>
+        <result column="create_time" property="createTime"/>
+        <result column="is_read" property="isRead"/>
+    </resultMap>
+</mapper>
