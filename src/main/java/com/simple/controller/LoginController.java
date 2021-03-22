@@ -17,10 +17,10 @@ public class LoginController {
     @Resource
     private UserService userService;
 
-    @RequestMapping("/")
-    public String index(){
-        return "login";
-    }
+//    @RequestMapping("/")
+//    public String index(){
+//        return "login";
+//    }
 
     @PostMapping("/login")
     public String login(UserParam userParam, HttpSession session){

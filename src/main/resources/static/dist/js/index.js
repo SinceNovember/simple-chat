@@ -100,7 +100,7 @@ $(function () {
         }).then(function(response){
             //把当前用户添加到返回中
             var $data = response.data;
-
+            axios.get('./api/user/test');
             //清除未读的记录
             clearNoReadMsg();
             $.each($data,function(index, data){
