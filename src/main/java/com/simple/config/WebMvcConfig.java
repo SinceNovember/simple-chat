@@ -1,25 +1,20 @@
 package com.simple.config;
 
 import com.simple.factory.StringToEnumConverterFactory;
-import com.simple.handler.ResultWrapReturnValueHandler;
 import com.simple.interceptor.AuthCheckInterceptor;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
-import org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
-public class WebMvcConfig implements WebMvcConfigurer, InitializingBean{
+public class WebMvcConfig extends WebMvcConfigurationSupport  {
 
     //拦截的路径WebMvcConfigurer
     @Value("#{'${interceptor.path}'.split(',')}")
@@ -57,24 +52,28 @@ public class WebMvcConfig implements WebMvcConfigurer, InitializingBean{
         registry.addConverterFactory(new StringToEnumConverterFactory());
     }
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        // 获取SpringMvc的ReturnValueHandlers
-        List<HandlerMethodReturnValueHandler> returnValueHandlers = adapter.getReturnValueHandlers();
-        // 新建一个List来保存替换后的Handler的List
-        List<HandlerMethodReturnValueHandler> handlers = new ArrayList<>(returnValueHandlers);
-        // 循环遍历找出RequestResponseBodyMethodProcessor
-        for (HandlerMethodReturnValueHandler handler : handlers) {
-            if (handler instanceof RequestResponseBodyMethodProcessor) {
-                // 创建定制的Json格式处理Handler
-                ResultWrapReturnValueHandler decorator = new ResultWrapReturnValueHandler(handler);
-                // 使用定制的Json格式处理Handler替换原有的RequestResponseBodyMethodProcessor
-                int index = handlers.indexOf(handler);
-                handlers.set(index, decorator);
-                break;
-            }
-        }
-        // 重新设置SpringMVC的ReturnValueHandlers
-        adapter.setReturnValueHandlers(handlers);
-    }
+    /**
+     * 设置SpringMvc的response包装实体
+     * @throws Exception
+     */
+//    @Override
+//    public void afterPropertiesSet() throws Exception {
+//        // 获取SpringMvc的ReturnValueHandlers
+//        List<HandlerMethodReturnValueHandler> returnValueHandlers = adapter.getReturnValueHandlers();
+//        // 新建一个List来保存替换后的Handler的List
+//        List<HandlerMethodReturnValueHandler> handlers = new ArrayList<>(returnValueHandlers);
+//        // 循环遍历找出RequestResponseBodyMethodProcessor
+//        for (HandlerMethodReturnValueHandler handler : handlers) {
+//            if (handler instanceof RequestResponseBodyMethodProcessor) {
+//                // 创建定制的Json格式处理Handler
+//                ResultWrapReturnValueHandler decorator = new ResultWrapReturnValueHandler(handler);
+//                // 使用定制的Json格式处理Handler替换原有的RequestResponseBodyMethodProcessor
+//                int index = handlers.indexOf(handler);
+//                handlers.set(index, decorator);
+//                break;
+//            }
+//        }
+//        // 重新设置SpringMVC的ReturnValueHandlers
+//        adapter.setReturnValueHandlers(handlers);
+//    }
 }

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -29,19 +30,19 @@ public class MsgHistoryController {
 
     /**
      * 清除未读消息数
-     * @param user
      * @param toId
+     * @param user
      * @return
      */
     @PutMapping("/clear")
-    public ResponseEntity<User> clearNoReadCount(@SessionAttribute("user") User user, @NonNull @RequestBody String param) {
+    public ResponseEntity clearNoReadCount(@SessionAttribute("user") User user, @NonNull @RequestBody String param) {
         String toId = JSONObject.parseObject(param).getString("toId");
         if (StringUtils.isEmpty(toId)) {
             log.error("发送者Id不能为空");
             return null;
         }
         msgHistoryService.clearNoReadCount(toId, user.getUserId());
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok().build();
     }
 
 }

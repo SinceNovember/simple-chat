@@ -7,7 +7,7 @@ datasource:
 spring:
   datasource:
     username: root
-    password: Gepoint
+    password: mypassword
 #    Gepoint
     url: jdbc:mysql://${datasource.url}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
     hikari:

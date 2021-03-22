@@ -26,17 +26,12 @@ public class ResultWrapReturnValueHandler implements HandlerMethodReturnValueHan
      */
     @Override
     public boolean supportsReturnType(MethodParameter returnType) {
-        System.out.println(delegate.supportsReturnType(returnType));
         return delegate.supportsReturnType(returnType);
     }
 
     @Override
     public void handleReturnValue(@Nullable Object returnValue, MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer, NativeWebRequest nativeWebRequest) throws Exception {
         // 委托SpringMVC默认的RequestResponseBodyMethodProcessor进行序列化
-        if (returnValue instanceof ResultVO) {
-            System.out.println(returnValue);
-            System.out.println(ResultVO.success(returnValue));
-        }
         delegate.handleReturnValue(returnValue instanceof ResultVO ? returnValue : ResultVO.success(returnValue), methodParameter, modelAndViewContainer, nativeWebRequest);
     }
 }
