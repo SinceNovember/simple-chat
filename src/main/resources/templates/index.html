@@ -361,12 +361,13 @@
                     </li>
                 </ul>
                 <div class="tab-content">
+
                     <div class="tab-pane show active" id="personal" role="tabpanel">
-                        <form>
+                        <form id="infoForm">
                             <div class="form-group">
                                 <label for="fullname" class="col-form-label">Fullname</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" id="fullname">
+                                    <input type="text" class="form-control"  name="displayname" id="fullname">
                                     <div class="input-group-append">
                                         <span class="input-group-text">
                                             <i data-feather="user"></i>
@@ -393,7 +394,7 @@
                             <div class="form-group">
                                 <label for="city" class="col-form-label">City</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" id="city" placeholder="Ex: Columbia">
+                                    <input type="text" class="form-control" name="city" id="city" placeholder="Ex: Columbia">
                                     <div class="input-group-append">
                                         <span class="input-group-text">
                                             <i data-feather="target"></i>
@@ -404,7 +405,7 @@
                             <div class="form-group">
                                 <label for="phone" class="col-form-label">Phone</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" id="phone" placeholder="(555) 555 55 55">
+                                    <input type="text" class="form-control" name="phone" id="phone" placeholder="(555) 555 55 55">
                                     <div class="input-group-append">
                                         <span class="input-group-text">
                                             <i data-feather="phone"></i>
@@ -414,19 +415,19 @@
                             </div>
                             <div class="form-group">
                                 <label for="website" class="col-form-label">Website</label>
-                                <input type="text" class="form-control" id="website" placeholder="https://">
+                                <input type="text" class="form-control" name="website" id="website" placeholder="https://">
                             </div>
                         </form>
                     </div>
                     <div class="tab-pane" id="about" role="tabpanel">
-                        <form>
+                        <form id="introduceForm">
                             <div class="form-group">
                                 <label for="about-text" class="col-form-label">Write a few words that describe
                                     you</label>
                                 <textarea class="form-control" id="about-text"></textarea>
                             </div>
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" checked id="customCheck1">
+                                <input type="checkbox" name="introduce" class="custom-control-input" checked id="customCheck1">
                                 <label class="custom-control-label" for="customCheck1">View profile</label>
                             </div>
                         </form>
@@ -518,7 +519,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Save</button>
+                <button type="button"  id="saveInfo" class="btn btn-primary">Save</button>
             </div>
         </div>
     </div>
@@ -1990,36 +1991,10 @@
                 {{^hasNoReadMsg}}
                 <small class="text-muted">{{lastMsgTime}}</small>
                 {{/hasNoReadMsg}}
-<!--                <div class="action-toggle">-->
-<!--                    <div class="dropdown show">-->
-<!--                        <a data-toggle="dropdown" href="#">-->
-<!--                            <i data-feather="more-horizontal"></i>-->
-<!--                        </a>-->
-<!--                        <div class="dropdown-menu dropdown-menu-right">-->
-<!--                            <a href="#" class="dropdown-item">Open</a>-->
-<!--                            <a href="#" data-navigation-target="contact-information"-->
-<!--                               class="dropdown-item">Profile</a>-->
-<!--                            <a href="#" class="dropdown-item">Add to archive</a>-->
-<!--                            <div class="dropdown-divider"></div>-->
-<!--                            <a href="#" class="dropdown-item text-danger">Delete</a>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
+
             </div>
         </div>
-        <!--        <figure class="avatar avatar-state-success">-->
-        <!--            <img src="dist/media/img/man_avatar1.jpg" class="rounded-circle" alt="image">-->
-        <!--        </figure>-->
-        <!--        <div class="users-list-body">-->
-        <!--            <div>-->
-        <!--                <h5 class="text-primary">{{displayName}}</h5>-->
-        <!--                <p>What's up, how are you?</p>-->
-        <!--            </div>-->
-        <!--            <div class="users-list-action">-->
-        <!--                <div class="new-message-count">3</div>-->
-        <!--                <small class="text-primary">03:41 PM</small>-->
-        <!--            </div>-->
-        <!--        </div>-->
+
     </li>
     {{/listData}}
 </script>

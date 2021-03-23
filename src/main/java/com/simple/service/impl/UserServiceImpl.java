@@ -2,6 +2,7 @@ package com.simple.service.impl;
 
 import com.simple.core.AbstractService;
 import com.simple.dao.UserMapper;
+import com.simple.model.dto.UserDTO;
 import com.simple.model.dto.UserWithFriendDTO;
 import com.simple.model.entity.User;
 import com.simple.model.entity.UserWithFriend;
@@ -26,6 +27,29 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     @Override
     public UserWithFriend getUserInfo(String userId) {
         return userMapper.getUserInfo(userId);
+    }
+
+    /**
+     * 获取用户的详细信息
+     * @param userId
+     * @return
+     */
+    @Override
+    public User getUserDetailInfo(String userId) {
+        return userMapper.getUserInfo(userId);
+    }
+
+    @Override
+    public UserDTO convertDetailTo(User user) {
+        Assert.notNull(user,"user is not null");
+        return new UserDTO().covertFrom(user);
+    }
+
+    @Override
+    public List<UserDTO> convertDetailTo(List<User> users) {
+        return users.stream()
+                .map(this::convertDetailTo)
+                .collect(Collectors.toList());
     }
 
     @Override

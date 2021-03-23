@@ -6,6 +6,12 @@
         <result column="loginid" property="loginId"/>
         <result column="password" property="password"/>
         <result column="displayname" property="displayName"/>
+        <result column="city" property="city"/>
+        <result column="phone" property="phone"/>
+        <result column="website" property="website"/>
+        <result column="introduce" property="introduce"/>
+        <result column="allow_view" property="allowView"/>
+
     </resultMap>
 
     <resultMap id="BaseWithFriendResultMap" type="com.simple.model.entity.UserWithFriend" extends="BaseResultMap">

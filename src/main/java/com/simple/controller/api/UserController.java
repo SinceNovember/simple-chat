@@ -1,17 +1,18 @@
 package com.simple.controller.api;
 
 
+import com.alibaba.fastjson.JSONObject;
+import com.simple.model.dto.UserDTO;
 import com.simple.model.dto.UserWithFriendDTO;
 import com.simple.model.entity.MsgHistory;
 import com.simple.model.entity.User;
 import com.simple.service.MsgHistoryService;
 import com.simple.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.lang.NonNull;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -25,9 +26,32 @@ public class UserController {
     @Resource
     private MsgHistoryService msgHistoryService;
 
-    @GetMapping("/info")
-    public ResponseEntity<User> info(@SessionAttribute("user") User user){
+    @GetMapping
+    public ResponseEntity<User> user(@SessionAttribute("user") User user){
         return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/info")
+    public ResponseEntity<UserDTO> info(@SessionAttribute("user") User user) {
+        return  ResponseEntity.ok(userService.convertDetailTo(userService.getUserDetailInfo(user.getUserId())));
+    }
+
+    @PostMapping("/info")
+    public ResponseEntity updateInfo(@SessionAttribute("user") User user, @NonNull @RequestBody String body) {
+        try {
+            JSONObject params = JSONObject.parseObject(body);
+            user.setPhone(params.getString("phone"));
+            user.setCity(params.getString("city"));
+            user.setWebsite(params.getString("website"));
+            user.setIntroduce(params.getString("introduce"));
+            userService.update(user);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("信息保存失败");
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
+        }
+
     }
 
     @GetMapping("/recent")

@@ -17,6 +17,16 @@ public class User {
 
     private String displayName;
 
+    private String  city;
+
+    private String phone;
+
+    private String website;
+
+    private String introduce;
+
+    private Integer allowView;
+
 //    private int noReadCount;
 //
 //    private boolean hasNoReadMsg;

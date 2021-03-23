@@ -21,6 +21,10 @@ public interface UserMapper extends MyMapper<User> {
     @ResultMap("BaseWithFriendResultMap")
     UserWithFriend getUserInfo(String userId);
 
+    @Select("select * from user  where userId =#{userId}")
+    @ResultMap("BaseResultMap")
+    User getUserDetailInfo(String userId);
+
     @Select("select b.* from user_friend_relation a join user b on a.friendId = b.userId where a.userId = #{userId}")
     List<UserWithFriend>  listUserFriend(String userId);
 }

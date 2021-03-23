@@ -1,5 +1,6 @@
 package com.simple.server.handler.message;
 
+import com.alibaba.fastjson.JSONObject;
 import com.simple.model.entity.MsgHistory;
 import com.simple.model.enums.MsgReadType;
 import com.simple.model.enums.MsgType;
@@ -28,7 +29,7 @@ public class SingleMsgHandler extends CommonMsgHandler {
            log.info(msg.getToId()+"不在线");
            saveMsg(msg);
         } else {
-            channel.writeAndFlush(new TextWebSocketFrame(msg.getContent())).addListener(future -> {
+            channel.writeAndFlush(new TextWebSocketFrame(JSONObject.toJSONString(msg))).addListener(future -> {
                 saveMsg(msg);
             });
         }

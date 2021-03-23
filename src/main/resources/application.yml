@@ -44,4 +44,4 @@ pagehelper:
 #拦截器的配置
 interceptor:
   path : /**
-  excludePath : /login,/,/dist/**,/vendor/**,/api/**
+  excludePath : /login,/,/dist/**,/vendor/**,/api/**,/static/**

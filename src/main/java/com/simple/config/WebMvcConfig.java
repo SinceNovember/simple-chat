@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
@@ -14,11 +13,12 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @Configuration
-public class WebMvcConfig extends WebMvcConfigurationSupport  {
+public class WebMvcConfig implements WebMvcConfigurer {
 
     //拦截的路径WebMvcConfigurer
     @Value("#{'${interceptor.path}'.split(',')}")
     private List<String> interceptorPath;
+
 
     //放行的路径
     @Value("#{'${interceptor.excludePath}'.split(',')}")

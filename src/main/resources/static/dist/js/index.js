@@ -16,6 +16,65 @@ $(function () {
         });
         $el.html(rendered);
     }
+
+    //将form里面的内容序列化成json数据
+    $.fn.serializeJson=function(otherString){
+        var serializeObj={},
+            array=this.serializeArray();
+        $(array).each(function(){
+            if(serializeObj[this.name]){
+                serializeObj[this.name]+=';'+this.value;
+            }else{
+                serializeObj[this.name]=this.value;
+            }
+        });
+        if(otherString!=undefined){
+            var otherArray = otherString.split(';');
+            $(otherArray).each(function(){
+                var otherSplitArray = this.split(':');
+                serializeObj[otherSplitArray[0]]=otherSplitArray[1];
+            });
+        }
+        return serializeObj;
+    };
+
+//将josn对象赋值给form--》即数据回显
+    $.fn.setForm = function(jsonValue){
+        var obj = this;
+        $.each(jsonValue,function(name,ival){
+            var $oinput = obj.find("input[name="+name+"]");
+            if($oinput.attr("type")=="checkbox"){
+                if(ival !== null){
+                    var checkboxObj = $("[name="+name+"]");
+                    var checkArray = ival.split(";");
+                    for(var i=0;i<checkboxObj.length;i++){
+                        for(var j=0;j<checkArray.length;j++){
+                            if(checkboxObj[i].value == checkArray[j]){
+                                checkboxObj[i].click();
+                            }
+                        }
+                    }
+                }
+            }
+            else if($oinput.attr("type")=="radio"){
+                $oinput.each(function(){
+                    var radioObj = $("[name="+name+"]");
+                    for(var i=0;i<radioObj.length;i++){
+                        if(radioObj[i].value == ival){
+                            radioObj[i].click();
+                        }
+                    }
+                });
+            }
+            else if($oinput.attr("type")=="textarea"){
+                obj.find("[name="+name+"]").html(ival);
+            }
+            else{
+                obj.find("[name="+name+"]").val(ival);
+            }
+        })
+    }
+
     /**
      * Some examples of how to use features.
      *
@@ -61,13 +120,17 @@ $(function () {
     /**
      * 获取登录的用户信息,并发送登录包
      */
-    var loadUserInfo = function () {
-        axios.get('/api/user/info').then(function(response){
+    var loadUser = function () {
+        axios.get('/api/user').then(function(response){
             userId = response.data.userId;
             ws.login_msg();
         }).catch(function(error){
             console.log("获取用户信息失败!");
         })
+    }
+
+    var loadChatHeader = function(){
+
     }
 
     /**
@@ -163,11 +226,26 @@ $(function () {
         toId = $(this).data('id');
         // clearNoReadMsg();
         // loadRecentChat();
+        // loadChatHeader();
         loadMsgHistory();
         // $(this).siblings().removeClass("open-chat");
         // $(this).addClass('open-chat');
 
 
+    });
+
+    $("#saveInfo").click(function(){
+        console.log($("#customCheck1"));
+        var view = $("#customCheck1").is(':checked');
+        var json = $("#infoForm").serializeJson('introduce:' + $("#about-text").val() + ';allowView:' + view);
+
+        axios.post('/api/user/info',json).then(function(response){
+            console.log(response);
+            // window.location.href='index.html';
+        }).catch(function(error){
+            console.log(error);
+        })
+        console.log(json);
     })
 
     if(!window.WebSocket){
@@ -177,15 +255,21 @@ $(function () {
         socket = new WebSocket("ws://localhost:8081/ws");
         socket.onmessage = function(event){
             // console.log(event.data);
-            // var json = JSON.parse(event.data);
-            SohoExamle.Message.add(event.data);
-            loadRecentChat();
+            var json = JSON.parse(event.data);
+            console.log(event);
+            //如果发送人是现在打开的页面的，则展示在对话框中
+            if (json.fromId == toId) {
+                SohoExamle.Message.add(json.content);
+                clearNoReadMsg();
+            } else {
+                loadRecentChat();
+            }
         };
 
         // 连接成功1秒后，将用户信息注册到服务器在线用户表
         socket.onopen = function(event){
             console.log("WebSocket已连接...");
-            loadUserInfo();
+            loadUser();
             loadRecentChat();
 
         }
